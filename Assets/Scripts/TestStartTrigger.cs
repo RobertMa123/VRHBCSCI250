@@ -5,15 +5,32 @@ using UnityEngine;
 
 public class TestStartTrigger : MonoBehaviour
 {
+    // the test this test start trigger should trigger
+    [SerializeField] private Test test;
+
+    // the test manager
+    private TestManager testManager;
+
+    // renderer component of the test start indicator
     private Renderer indicatorRenderer;
+
+    // speed at which to change the color of the button when pressed
     [SerializeField] private float colorChangeSpeed = 0.5f;
+
+    // color of button when unpressed (set to whatever color the indicator is on start)
     private Color startColor;
+
+    // color of button when pressed down
     [SerializeField] private Color endColor;
+    
+    // animator of the test start button
     private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
+        testManager = GameObject.FindObjectOfType<TestManager>();
+
         indicatorRenderer = GetComponent<Renderer>();
         startColor = indicatorRenderer.material.color;
         animator = GetComponent<Animator>();
@@ -33,6 +50,8 @@ public class TestStartTrigger : MonoBehaviour
                 animator.SetTrigger("Press");
             }
         }
+
+        
     }
 
     // When step off test starter
@@ -60,7 +79,22 @@ public class TestStartTrigger : MonoBehaviour
         while (indicatorRenderer.material.color != colorToTurnTo) {
             tick += Time.deltaTime * colorChangeSpeed;
             indicatorRenderer.material.color = Color.Lerp(colorToStartFrom, colorToTurnTo, tick);
+            if (indicatorRenderer.material.color == colorToTurnTo) {
+                // set test manager's current test to this test start trigger's test when push down is done
+                if (!reverse) testManager.setTestOverride(test);
+                // end test manager's current test when pop back up is done (for now, may want to change it so stepping off trigger doesn't end the test)
+                else testManager.endTest();
+            }
             yield return null;
         }
+
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
+    public Test getTest() {
+        return test;
     }
 }
