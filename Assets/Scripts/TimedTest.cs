@@ -7,9 +7,9 @@ using TMPro;
 // any test with a timer
 public class TimedTest : Test
 {
-    private float time = 0.0f;
+    protected float time = 0.0f;
 
-    private bool timerPaused = false;
+    protected bool timerPaused = false;
 
     private Canvas canvas;
 
@@ -40,12 +40,76 @@ public class TimedTest : Test
         timerText.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
     }
 
-    // destroy timer text and return the time as score
+    // destroy timer text and return the lowest time as score
     public override float EndTest() {
-        score = time;
-        time = 0.0f;
         Destroy(timerText);
 
-        return score;
+        float lowestScore = getLowestScore();
+
+        clearScores();
+
+        return lowestScore;
+    }
+
+    protected void pauseTimer() {
+        timerPaused = true;
+    }
+
+    protected void startTimer() {
+        timerPaused = false;
+    }
+
+    protected void toggleStartTimer() {
+        if (timerPaused) {
+            timerPaused = false;
+        } else {
+            timerPaused = true;
+        }
+    }
+
+    protected void showTimer() {
+        timerText.gameObject.SetActive(true);
+    }
+
+    protected void hideTimer() {
+        timerText.gameObject.SetActive(false);
+    }
+
+    protected void toggleShowTimer() {
+        if (timerText.gameObject.activeInHierarchy) {
+            hideTimer();
+        } else {
+            showTimer();
+        }
+    }
+
+    protected void saveTime() {
+        addScore(time);
+    }
+
+    protected void resetTime() {
+        time = 0.0f;
+    }
+
+    protected void saveAndResetTime() {
+        saveTime();
+        resetTime();
+    }
+
+    protected void startShowTime() {
+        startTimer();
+        showTimer();
+    }
+
+    protected void pauseResetHideTime() {
+        pauseTimer();
+        resetTime();
+        hideTimer();
+    }
+
+    protected void pauseSaveResetHideTime() {
+        pauseTimer();
+        saveAndResetTime();
+        hideTimer();
     }
 }
