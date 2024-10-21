@@ -13,7 +13,9 @@ public class TimedTest : Test
 
     private Canvas canvas;
 
-    private GameObject timerText;
+    protected GameObject timerText;
+
+    protected Color curTimerColor;
 
     public TimedTest() : base() {
 
@@ -38,6 +40,7 @@ public class TimedTest : Test
         timerText.AddComponent<TextMesh>().alignment = TextAlignment.Left;
         timerText.GetComponent<Transform>().SetParent(canvas.GetComponent<Transform>());
         timerText.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+        curTimerColor = timerText.GetComponent<TextMeshProUGUI>().color;
     }
 
     // destroy timer text and return the lowest time as score
@@ -49,6 +52,11 @@ public class TimedTest : Test
         clearScores();
 
         return lowestScore;
+    }
+
+    protected void setTimerColor(Color color) {
+        timerText.GetComponent<TextMeshProUGUI>().color = color;
+        curTimerColor = color;
     }
 
     protected void pauseTimer() {

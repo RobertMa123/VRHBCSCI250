@@ -14,13 +14,18 @@ public class ReactionTest : TimedTest
         RIGHT,
     }
 
-    protected int minWaitTime = 2;
-    protected int maxWaitTime = 3;
+    protected int minWaitTime = 1;
+    protected int maxWaitTime = 5;
 
     protected float intervalTimer = 0f;
     protected bool intervalTimerRunning = true;
 
     protected Reaction_curDirection curDirection = Reaction_curDirection.NONE;
+
+    Color normalColor;
+    Color wrongColor = new Color(100f, 0f, 0f, 100f);
+
+    protected bool acceptingInput = false;
 
     public override void UpdateTest() {
         base.UpdateTest();
@@ -28,19 +33,22 @@ public class ReactionTest : TimedTest
         if (curDirection == Reaction_curDirection.NONE) {
             if (intervalTimer <= 0) {
                 showArrow();
+                acceptingInput = true;
                 startShowTime();
                 intervalTimer = Random.Range(minWaitTime, maxWaitTime);
             } else {
                 intervalTimer -= Time.deltaTime;
             }
-        } else { 
+        } else if (acceptingInput) {
             if (Keyboard.current.leftArrowKey.wasPressedThisFrame) {
+                acceptingInput = false;
                 if (curDirection == Reaction_curDirection.LEFT) {
                     correctAnswerGiven();
                 } else {
                     wrongAnswerGiven();
                 }
             } else if (Keyboard.current.rightArrowKey.wasPressedThisFrame) {
+                acceptingInput = false;
                 if (curDirection == Reaction_curDirection.RIGHT) {
                     correctAnswerGiven();
                 } else {
@@ -52,6 +60,8 @@ public class ReactionTest : TimedTest
 
     public override void InitializeTest() {
         base.InitializeTest();
+
+        normalColor = curTimerColor;
 
         leftArrow.gameObject.SetActive(false);
         rightArrow.gameObject.SetActive(false);
@@ -89,16 +99,28 @@ public class ReactionTest : TimedTest
     }
 
     protected void correctAnswerGiven() {
-        Debug.Log("Correct");
+        pauseTimer();
+        StartCoroutine(delayHideArrowCorrect(1.0f));
+    }
+
+    protected void wrongAnswerGiven() {
+        pauseTimer();
+        setTimerColor(wrongColor);
+        StartCoroutine(delayHideArrowWrong(1.0f));
+    }
+
+    protected IEnumerator delayHideArrowCorrect(float seconds) {
+        yield return new WaitForSeconds(seconds);
         pauseSaveResetHideTime();
         hideArrow();
         intervalTimer = Random.Range(minWaitTime, maxWaitTime);
     }
 
-    protected void wrongAnswerGiven() {
-        Debug.Log("Wrong");
+    protected IEnumerator delayHideArrowWrong(float seconds) {
+        yield return new WaitForSeconds(seconds);
         pauseResetHideTime();
         hideArrow();
         intervalTimer = Random.Range(minWaitTime, maxWaitTime);
+        setTimerColor(normalColor);
     }
 }
