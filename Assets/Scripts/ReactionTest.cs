@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 public class ReactionTest : TimedTest
 {
     [SerializeField] protected GameObject leftArrow;
     [SerializeField] protected GameObject rightArrow;
-
+    private InputData input;
     public enum Reaction_curDirection {
         NONE = 0,
         LEFT,
@@ -26,7 +27,10 @@ public class ReactionTest : TimedTest
     Color wrongColor = new Color(100f, 0f, 0f, 100f);
 
     protected bool acceptingInput = false;
-
+    private void Start()
+    {
+        input = GetComponent<InputData>();
+    }
     public override void UpdateTest() {
         base.UpdateTest();
 
@@ -40,14 +44,14 @@ public class ReactionTest : TimedTest
                 intervalTimer -= Time.deltaTime;
             }
         } else if (acceptingInput) {
-            if (Keyboard.current.leftArrowKey.wasPressedThisFrame) {
+            if ((Keyboard.current.leftArrowKey.wasPressedThisFrame) || (input._leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressedLeft))) {
                 acceptingInput = false;
                 if (curDirection == Reaction_curDirection.LEFT) {
                     correctAnswerGiven();
                 } else {
                     wrongAnswerGiven();
                 }
-            } else if (Keyboard.current.rightArrowKey.wasPressedThisFrame) {
+            } else if ((Keyboard.current.rightArrowKey.wasPressedThisFrame) || (input._rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressedRight))) {
                 acceptingInput = false;
                 if (curDirection == Reaction_curDirection.RIGHT) {
                     correctAnswerGiven();
