@@ -6,9 +6,19 @@ using UnityEngine;
 public abstract class Test : MonoBehaviour
 {
     protected List<float> scores = new List<float>();
+    protected int incorrectInputs = 0;
+
+    protected string testName;
+    protected bool highestScoreIsBest;
+
+    protected TestTutorial tutorial;
+
+    protected bool tutorialFinished = false;
 
     public Test() {
-        
+        testName = "Test";
+        highestScoreIsBest = true;
+        tutorial = new TestTutorial();
     }
 
     public Test(float score) {
@@ -98,7 +108,70 @@ public abstract class Test : MonoBehaviour
         }
     }
 
+    public float getAverageScore() {
+        float averageScore = 0.0f;
+
+        for (int i = 0; i < scores.Count; ++i) {
+            averageScore += scores[i];
+        }
+
+        averageScore = averageScore / scores.Count;
+
+        return averageScore;
+    }
+
     public List<float> getScores() {
         return scores;
+    }
+
+    public float getBestScore() {
+        if (highestScoreIsBest) {
+            return getHighestScore();
+        } else { 
+            return getLowestScore();
+        }
+    }
+
+    public float getWorstScore() {
+        if (highestScoreIsBest) {
+            return getLowestScore();
+        }
+        else {
+            return getHighestScore();
+        }
+    }
+
+    public float getAccuracyPercentage() {
+        if (scores.Count > 0 || incorrectInputs > 0) {
+            float totalNumAttempts = incorrectInputs + scores.Count;
+
+            float accuracyPercentage = scores.Count / totalNumAttempts;
+            accuracyPercentage *= 100;
+
+            return accuracyPercentage;
+        } else {
+            Debug.Log("Test class getAccuracyPercentage() cannot be executed since there are no scores currently in the scores list. The value 0 was returned.");
+            return 0f;
+        }
+    }
+
+    public string getTestName() {
+        return testName;
+    }
+
+    public bool getHighestScoreIsBest() {
+        return highestScoreIsBest;
+    }
+
+    public TestTutorial getTestTutorial() {
+        return tutorial;
+    }
+
+    public bool getTutorialFinished() {
+        return tutorialFinished;
+    }
+
+    public void setTutorialFinished(bool tutorialFinished) {
+        this.tutorialFinished = tutorialFinished;
     }
 }

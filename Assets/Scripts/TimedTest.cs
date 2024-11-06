@@ -18,14 +18,19 @@ public class TimedTest : Test
     protected Color curTimerColor;
 
     public TimedTest() : base() {
-
+        testName = "Timed Test";
+        highestScoreIsBest = false;
     }
 
     public override void UpdateTest()
     {
-        if (!timerPaused) {
-            time += Time.deltaTime;
-            timerText.GetComponent<TextMeshProUGUI>().text = time.ToString();
+        if (tutorialFinished) {
+            if (!timerPaused)
+            {
+                timerText.SetActive(true);
+                time += Time.deltaTime;
+                timerText.GetComponent<TextMeshProUGUI>().text = time.ToString();
+            }
         }
     }
 
@@ -41,6 +46,7 @@ public class TimedTest : Test
         timerText.GetComponent<Transform>().SetParent(canvas.GetComponent<Transform>());
         timerText.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
         curTimerColor = timerText.GetComponent<TextMeshProUGUI>().color;
+        timerText.SetActive(false);
     }
 
     // destroy timer text and return the lowest time as score
@@ -50,6 +56,8 @@ public class TimedTest : Test
         float lowestScore = getLowestScore();
 
         clearScores();
+
+        incorrectInputs = 0;
 
         return lowestScore;
     }

@@ -27,36 +27,65 @@ public class ReactionTest : TimedTest
     Color wrongColor = new Color(100f, 0f, 0f, 100f);
 
     protected bool acceptingInput = false;
-    private void Start()
-    {
-        input = GetComponent<InputData>();
+
+    public ReactionTest() : base() {
+        testName = "Reaction Test";
+        highestScoreIsBest = false;
+
+        tutorial.addPage("Welcome to the basic reacion test.");
+        tutorial.addPage("When the test starts, either a left or right arrow will appear on screen at random.");
+        tutorial.addPage("A timer on-screen will increase in time as soon as the arrow appears.");
+        tutorial.addPage("Press the corresponding controller's trigger as fast as you can to stop the timer.");
+        tutorial.addPage("If your input is correct, the timer will remain white when it stops. However, if your input is incorrect, the timer will turn red.");
+        tutorial.addPage("The timer and arrow will then disappear. After a few seconds, a new arrow will appear for you to react to.");
+        tutorial.addPage("Once you are done testing your reaction speed, step off the standing platform and your results will appear.");
+        tutorial.addPage("Try to prioritize speed while maintaining accuracy.\n\nContinue to start the test.");
     }
-    public override void UpdateTest() {
+
+    public override void UpdateTest()
+    {
         base.UpdateTest();
 
-        if (curDirection == Reaction_curDirection.NONE) {
-            if (intervalTimer <= 0) {
-                showArrow();
-                acceptingInput = true;
-                startShowTime();
-                intervalTimer = Random.Range(minWaitTime, maxWaitTime);
-            } else {
-                intervalTimer -= Time.deltaTime;
-            }
-        } else if (acceptingInput) {
-            if ((Keyboard.current.leftArrowKey.wasPressedThisFrame) || (input._leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressedLeft))) {
-                acceptingInput = false;
-                if (curDirection == Reaction_curDirection.LEFT) {
-                    correctAnswerGiven();
-                } else {
-                    wrongAnswerGiven();
+        if (tutorialFinished) {
+            if (curDirection == Reaction_curDirection.NONE)
+            {
+                if (intervalTimer <= 0)
+                {
+                    showArrow();
+                    acceptingInput = true;
+                    startShowTime();
+                    intervalTimer = Random.Range(minWaitTime, maxWaitTime);
                 }
-            } else if ((Keyboard.current.rightArrowKey.wasPressedThisFrame) || (input._rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressedRight))) {
-                acceptingInput = false;
-                if (curDirection == Reaction_curDirection.RIGHT) {
-                    correctAnswerGiven();
-                } else {
-                    wrongAnswerGiven();
+                else
+                {
+                    intervalTimer -= Time.deltaTime;
+                }
+            }
+            else if (acceptingInput)
+            {
+                if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                {
+                    acceptingInput = false;
+                    if (curDirection == Reaction_curDirection.LEFT)
+                    {
+                        correctAnswerGiven();
+                    }
+                    else
+                    {
+                        wrongAnswerGiven();
+                    }
+                }
+                else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                {
+                    acceptingInput = false;
+                    if (curDirection == Reaction_curDirection.RIGHT)
+                    {
+                        correctAnswerGiven();
+                    }
+                    else
+                    {
+                        wrongAnswerGiven();
+                    }
                 }
             }
         }
@@ -77,6 +106,7 @@ public class ReactionTest : TimedTest
 
         float lowestScore = getLowestScore();
         base.EndTest();
+
         return lowestScore;
     }
 
@@ -108,6 +138,7 @@ public class ReactionTest : TimedTest
     }
 
     protected void wrongAnswerGiven() {
+        ++incorrectInputs;
         pauseTimer();
         setTimerColor(wrongColor);
         StartCoroutine(delayHideArrowWrong(1.0f));
