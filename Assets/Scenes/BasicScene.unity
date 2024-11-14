@@ -31204,7 +31204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7033526865389981004, guid: 235867f784e64a142a64cf0451ff275c, type: 3}
       propertyPath: m_Name
-      value: PastResultsPedistal
+      value: PastResultsPedastal
       objectReference: {fileID: 0}
     - target: {fileID: 7747722128129535650, guid: 235867f784e64a142a64cf0451ff275c, type: 3}
       propertyPath: m_Mesh
