@@ -4,7 +4,12 @@ using UnityEngine;
 
 public struct PastResult
 {
-    public int rank;
     public float score;
     public string name;
+
+    public PastResult(float score, string name)
+    {
+        this.score = score;
+        this.name = name;
+    }
 }

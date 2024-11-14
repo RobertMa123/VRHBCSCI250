@@ -17,9 +17,7 @@ public class TestManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text_worst;
     [SerializeField] private TextMeshProUGUI text_accuracy;
 
-    [SerializeField] private GameObject tutorialViewer;
-    [SerializeField] private TextMeshProUGUI text_tutorialTextType;
-    [SerializeField] private TextMeshProUGUI text_instructions;
+    [SerializeField] private TutorialUIObject tutorialUI;
 
     private List<float> scores = new List<float>();
 
@@ -31,7 +29,7 @@ public class TestManager : MonoBehaviour
     void Start()
     {
         testScoreViewer.SetActive(false);
-        tutorialViewer.SetActive(false);
+        if (tutorialUI != null) tutorialUI.tutorialViewer.SetActive(false);
 
         if (currentTest != null) {
             currentTest.InitializeTest();
@@ -64,7 +62,8 @@ public class TestManager : MonoBehaviour
         {
 
             scores = currentTest.getScores();
-            GetComponent<InputHandler>().AddNameToList(scores[1]);
+            InputHandler inputHandler = GetComponent<InputHandler>();
+            if (inputHandler != null && scores.Count >= 2) inputHandler.AddNameToList(scores[1]);
             setScoreViewer();
             if (scores.Count > 0) showScores();
             currentTest.EndTest();
@@ -120,7 +119,9 @@ public class TestManager : MonoBehaviour
     {
         if (currentTest != null)
         {
-            text_tutorialTextType.text = currentTest.getTestName() + " Tutorial";
+            tutorialUI = currentTest.getTutorialUI();
+            tutorialUI.tutorialViewer.SetActive(false);
+            tutorialUI.text_tutorialTestType.text = currentTest.getTestName() + " Tutorial";
             currentTest.setTutorialFinished(false);
             setTutorialPage(0);
 
@@ -132,7 +133,7 @@ public class TestManager : MonoBehaviour
         if (currentTest != null)
         {
             currentTest.getTestTutorial().setCurPage(tutorialPage);
-            text_instructions.text = currentTest.getTestTutorial().getCurText();
+            tutorialUI.text_instructions.text = currentTest.getTestTutorial().getCurText();
         }
     }
 
@@ -157,14 +158,14 @@ public class TestManager : MonoBehaviour
     }
 
     public void showTutorial() {
-        tutorialViewer.SetActive(true);
+        tutorialUI.tutorialViewer.SetActive(true);
         tutorialIsShowing = true;
     }
 
     public void hideTutorial()
     {
         if (currentTest != null) {
-            tutorialViewer.SetActive(false);
+            tutorialUI.tutorialViewer.SetActive(false);
             tutorialIsShowing = false;
             currentTest.setTutorialFinished(true);
         }

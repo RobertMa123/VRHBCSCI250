@@ -13,6 +13,8 @@ public abstract class Test : MonoBehaviour
 
     protected TestTutorial tutorial;
 
+    [SerializeField] protected TutorialUIObject tutorialUI;
+
     protected bool tutorialFinished = false;
 
     public Test() {
@@ -165,6 +167,10 @@ public abstract class Test : MonoBehaviour
 
     public TestTutorial getTestTutorial() {
         return tutorial;
+    }
+
+    public TutorialUIObject getTutorialUI() {
+        return tutorialUI;
     }
 
     public bool getTutorialFinished() {

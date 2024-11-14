@@ -92,6 +92,8 @@ public class MemoryTest : Test
         testName = "Memory Test";
         highestScoreIsBest = true;
 
+        tutorial.addPage("Welcome to the Memory Test.");
+        tutorial.addPage("The test is played like Simon.");
         tutorial.addPage("The cube indicator in the center will light up white after the sequence finishes displaying. This indicates that it is your turn to input the sequence.");
         tutorial.addPage("If you repeat the sequence back correctly, the cube light will turn off and the sequence will replay with one more light added to the end.");
         tutorial.addPage("The cube will turn black if you get it wrong, then restart with a new sequence.");
