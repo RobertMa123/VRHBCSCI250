@@ -62,11 +62,14 @@ public class TestManager : MonoBehaviour
     {
         if (currentTest != null)
         {
+
             scores = currentTest.getScores();
+            GetComponent<InputHandler>().AddNameToList(scores[1]);
             setScoreViewer();
             if (scores.Count > 0) showScores();
             currentTest.EndTest();
             currentTest = null;
+
         }
     }
 

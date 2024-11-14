@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class InputHandler : MonoBehaviour {
     [SerializeField] InputField nameInput;
     [SerializeField] string filename;
-    public float score;
 
     List<InputEntry> entries = new List<InputEntry> ();
 
@@ -13,7 +12,7 @@ public class InputHandler : MonoBehaviour {
         entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
     }
 
-    public void AddNameToList () {
+    public void AddNameToList (float score) {
 
         if (nameInput == null) entries.Add(new InputEntry("player", score));
         else
