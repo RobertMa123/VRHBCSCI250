@@ -171,7 +171,7 @@ public abstract class Test : MonoBehaviour
         return tutorialFinished;
     }
 
-    public void setTutorialFinished(bool tutorialFinished) {
+    public virtual void setTutorialFinished(bool tutorialFinished) {
         this.tutorialFinished = tutorialFinished;
     }
 }

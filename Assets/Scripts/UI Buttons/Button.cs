@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class Button : MonoBehaviour
 {
+    public bool bDebug = false;
+
     public float deadTime = 1.0f;
     private bool _deadTimeActive = false;
 
@@ -16,7 +18,7 @@ public class Button : MonoBehaviour
         if (other.tag == "Button" && !_deadTimeActive)
         {
             onPressed?.Invoke();
-            Debug.Log("button pressed");
+            if (bDebug) Debug.Log("button pressed");
         }
     }
 
@@ -25,7 +27,7 @@ public class Button : MonoBehaviour
         if (other.tag == "Button" && !_deadTimeActive)
         {
             onReleased?.Invoke();
-            Debug.Log("button released");
+            if (bDebug) Debug.Log("button released");
             StartCoroutine(WaitForDeadTime());
         }
     }
