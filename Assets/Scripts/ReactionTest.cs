@@ -28,6 +28,10 @@ public class ReactionTest : TimedTest
 
     protected bool acceptingInput = false;
 
+    private void Start()
+    {
+        input = GetComponent<InputData>();
+    }
     public ReactionTest() : base() {
         testName = "Reaction Test";
         highestScoreIsBest = false;
@@ -63,8 +67,9 @@ public class ReactionTest : TimedTest
             }
             else if (acceptingInput)
             {
-                if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                if (Keyboard.current.leftArrowKey.wasPressedThisFrame || (input._leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressedLeft) && pressedLeft))
                 {
+                    Debug.Log("left button pressed");
                     acceptingInput = false;
                     if (curDirection == Reaction_curDirection.LEFT)
                     {
@@ -75,8 +80,10 @@ public class ReactionTest : TimedTest
                         wrongAnswerGiven();
                     }
                 }
-                else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                else if (Keyboard.current.rightArrowKey.wasPressedThisFrame || (input._rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressedRight) && pressedRight))
                 {
+                    Debug.Log("right button pressed");
+
                     acceptingInput = false;
                     if (curDirection == Reaction_curDirection.RIGHT)
                     {
