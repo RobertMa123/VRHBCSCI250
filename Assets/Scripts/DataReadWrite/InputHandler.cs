@@ -12,12 +12,12 @@ public class InputHandler : MonoBehaviour {
         entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
     }
 
-    public void AddNameToList (float score) {
+    public void AddNameToList (string testName, float score) {
 
-        if (nameInput == null) entries.Add(new InputEntry("player", score));
+        if (nameInput == null) entries.Add(new InputEntry("player",testName, score));
         else
         {
-            entries.Add(new InputEntry(nameInput.text, score));
+            entries.Add(new InputEntry(nameInput.text,testName, score));
             nameInput.text = "";
         }
 
