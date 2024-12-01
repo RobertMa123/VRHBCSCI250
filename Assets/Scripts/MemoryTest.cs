@@ -81,6 +81,8 @@ public class MemoryTest : Test
 
     private int curLightSequenceIndex = 0;
 
+    protected int correctInputs = 0;
+
     public void Start()
     {
         c_indicator_default = turnIndicator.GetComponent<MeshRenderer>().material;
@@ -200,6 +202,7 @@ public class MemoryTest : Test
 
             if (direction == directionSequence[curCorrectCount])
             {
+                ++correctInputs;
                 if (curCorrectCount >= directionSequence.Count - 1)
                 {
                     curCorrectCount = 0;
@@ -208,6 +211,8 @@ public class MemoryTest : Test
                 else ++curCorrectCount;
             } else
             {
+                addScore(directionSequence.Count - 1);
+                ++incorrectInputs;
                 curCorrectCount = 0;
                 currentPhase = MemoryTest_Phases.RESTART_SEQUENCE;
             }
@@ -222,7 +227,20 @@ public class MemoryTest : Test
 
         clearScores();
 
+        clearSequence();
+
+        curCorrectCount = 0;
+
         incorrectInputs = 0;
+        correctInputs = 0;
+
+        curLightSequenceIndex = 0;
+
+        timer = 0.0f;
+
+        currentPhase = MemoryTest_Phases.START_SEQUENCE;
+
+        turnIndicator.GetComponent<MeshRenderer>().material = c_indicator_default;
 
         return highestScore;
     }
@@ -320,5 +338,23 @@ public class MemoryTest : Test
 
     public void clearSequence() {
         directionSequence.Clear();
+    }
+
+    public override float getAccuracyPercentage()
+    {
+        if (correctInputs > 0 || incorrectInputs > 0)
+        {
+            float totalNumButtonPresses = correctInputs + incorrectInputs;
+
+            float accuracyPercentage = correctInputs / totalNumButtonPresses;
+            accuracyPercentage *= 100;
+
+            return accuracyPercentage;
+        }
+        else
+        {
+            Debug.Log("Memory Test class getAccuracyPercentage() cannot be executed since there are no scores currently in the scores list. The value 0 was returned.");
+            return 0f;
+        }
     }
 }
