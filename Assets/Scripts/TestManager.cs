@@ -57,7 +57,7 @@ public class TestManager : MonoBehaviour
 
             scores = currentTest.getScores();
             InputHandler inputHandler = GetComponent<InputHandler>();
-            if (inputHandler != null && scores.Count >= 2) inputHandler.AddNameToList(currentTest.name ,scores[1]);
+            if (inputHandler != null) inputHandler.AddNameToList(currentTest.name ,currentTest.getAverageScore());
             setScoreViewer();
             if (scores.Count > 0) showScores();
             currentTest.EndTest();

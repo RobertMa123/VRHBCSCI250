@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class InputHandler : MonoBehaviour {
-    [SerializeField] InputField nameInput;
     [SerializeField] string filename;
+    [SerializeField] VRKeyboard keyboard;
 
     List<InputEntry> entries = new List<InputEntry> ();
 
@@ -14,11 +14,10 @@ public class InputHandler : MonoBehaviour {
 
     public void AddNameToList (string testName, float score) {
 
-        if (nameInput == null) entries.Add(new InputEntry("player",testName, score));
+        if (keyboard.curString == null) entries.Add(new InputEntry("player",testName, score));
         else
         {
-            entries.Add(new InputEntry(nameInput.text,testName, score));
-            nameInput.text = "";
+            entries.Add(new InputEntry(keyboard.curString, testName, score));
         }
 
         FileHandler.SaveToJSON<InputEntry> (entries, filename);

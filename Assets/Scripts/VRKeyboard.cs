@@ -7,7 +7,7 @@ public class VRKeyboard : MonoBehaviour
 {
     public TextMeshProUGUI text;
 
-    private string curString = "";
+    public string curString = "";
 
     private bool caps = false;
 
