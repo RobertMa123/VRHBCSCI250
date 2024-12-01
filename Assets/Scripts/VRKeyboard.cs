@@ -179,7 +179,6 @@ public class VRKeyboard : MonoBehaviour
 
     public void Concatenate(string stringToConcat)
     {
-        Debug.Log(stringToConcat);
         curString += stringToConcat;
         updateDisplay();
     }
