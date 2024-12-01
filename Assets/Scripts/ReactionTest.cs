@@ -36,7 +36,7 @@ public class ReactionTest : TimedTest
         testName = "Reaction Test";
         highestScoreIsBest = false;
 
-        tutorial.addPage("Welcome to the basic reacion test.");
+        tutorial.addPage("Welcome to the basic reaction test.");
         tutorial.addPage("When the test starts, either a left or right arrow will appear on screen at random.");
         tutorial.addPage("A timer on-screen will increase in time as soon as the arrow appears.");
         tutorial.addPage("Press the corresponding controller's trigger as fast as you can to stop the timer.");

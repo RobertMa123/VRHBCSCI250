@@ -14,6 +14,7 @@ public abstract class Test : MonoBehaviour
     protected TestTutorial tutorial;
 
     [SerializeField] protected TutorialUIObject tutorialUI;
+    [SerializeField] protected ResultsUIObject resultsUI;
 
     protected bool tutorialFinished = false;
 
@@ -143,7 +144,7 @@ public abstract class Test : MonoBehaviour
         }
     }
 
-    public float getAccuracyPercentage() {
+    public virtual float getAccuracyPercentage() {
         if (scores.Count > 0 || incorrectInputs > 0) {
             float totalNumAttempts = incorrectInputs + scores.Count;
 
@@ -171,6 +172,10 @@ public abstract class Test : MonoBehaviour
 
     public TutorialUIObject getTutorialUI() {
         return tutorialUI;
+    }
+
+    public ResultsUIObject getResultsUI() {
+        return resultsUI;
     }
 
     public bool getTutorialFinished() {

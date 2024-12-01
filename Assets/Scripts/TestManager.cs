@@ -10,14 +10,8 @@ public class TestManager : MonoBehaviour
 {
     private Test currentTest;
 
-    [SerializeField] private GameObject testScoreViewer;
-    [SerializeField] private TextMeshProUGUI text_testType;
-    [SerializeField] private TextMeshProUGUI text_avg;
-    [SerializeField] private TextMeshProUGUI text_best;
-    [SerializeField] private TextMeshProUGUI text_worst;
-    [SerializeField] private TextMeshProUGUI text_accuracy;
-
     [SerializeField] private TutorialUIObject tutorialUI;
+    [SerializeField] private ResultsUIObject resultsUI;
 
     private List<float> scores = new List<float>();
 
@@ -28,7 +22,7 @@ public class TestManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        testScoreViewer.SetActive(false);
+        if (resultsUI != null) resultsUI.testScoreViewer.SetActive(false);
         if (tutorialUI != null) tutorialUI.tutorialViewer.SetActive(false);
 
         if (currentTest != null) {
@@ -95,21 +89,22 @@ public class TestManager : MonoBehaviour
 
     public void setScoreViewer() {
         if (currentTest != null) {
-            text_testType.text = currentTest.getTestName();
-            text_avg.text = "Average Score: " + currentTest.getAverageScore().ToString("0.00");
-            text_best.text = "Best Score: " + currentTest.getBestScore().ToString("0.00");
-            text_worst.text = "Worst Score: " + currentTest.getWorstScore().ToString("0.00");
-            text_accuracy.text = "Accuracy: " + currentTest.getAccuracyPercentage().ToString("0.00") + "%";
+            resultsUI = currentTest.getResultsUI();
+            resultsUI.text_testType.text = currentTest.getTestName();
+            resultsUI.text_avg.text = "Average Score: " + currentTest.getAverageScore().ToString("0.00");
+            resultsUI.text_best.text = "Best Score: " + currentTest.getBestScore().ToString("0.00");
+            resultsUI.text_worst.text = "Worst Score: " + currentTest.getWorstScore().ToString("0.00");
+            resultsUI.text_accuracy.text = "Accuracy: " + currentTest.getAccuracyPercentage().ToString("0.00") + "%";
         }
     }
 
     public void showScores() {
-        testScoreViewer.SetActive(true);
+        resultsUI.testScoreViewer.SetActive(true);
         scoreIsShowing = true;
     }
 
     public void hideScores() {
-        testScoreViewer.SetActive(false);
+        resultsUI.testScoreViewer.SetActive(false);
         scoreIsShowing = false;
     }
 
