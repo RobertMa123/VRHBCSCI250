@@ -162,6 +162,7 @@ public class VRKeyboard : MonoBehaviour
         {
             curString = curString.Substring(0, curString.Length - 1);
         }
+
         updateDisplay();
     }
 
@@ -185,19 +186,20 @@ public class VRKeyboard : MonoBehaviour
     public void Concatenate(string stringToConcat)
     {
         curString += stringToConcat;
-        outputText.text = $"You are {curString}";
         updateDisplay();
     }
 
     public void Clear()
     {
         curString = "";
+
         updateDisplay();
     }
 
     public void Overwrite(string stringToOverwriteWith)
     {
         curString = stringToOverwriteWith;
+
         updateDisplay();
     }
 
@@ -210,7 +212,9 @@ public class VRKeyboard : MonoBehaviour
     private void updateDisplay()
     {
         text.text = curString;
+        outputText.text = $"You are {curString}";
+
     }
 
-   
+
 }

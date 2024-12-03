@@ -93,6 +93,7 @@ public class MemoryTest : Test
     [Header("Sound Effects")]
     [SerializeField] private AudioClip pressButton;
     [SerializeField] private AudioClip buttonLit;
+    [SerializeField] private AudioClip wrongButton;
 
     public void Start()
     {
@@ -189,7 +190,7 @@ public class MemoryTest : Test
 
     public void buttonPressed(Direction direction)
     {
-        PlaySound(pressButton);
+        PlaySound(pressButton, 1);
         if (currentPhase == MemoryTest_Phases.AWAITING_RESPONSE)
         {
             string stringDirection = "";
@@ -224,6 +225,7 @@ public class MemoryTest : Test
                 else ++curCorrectCount;
             } else
             {
+                PlaySound(wrongButton, 0.6f);
                 addScore(directionSequence.Count - 1);
                 ++incorrectInputs;
                 curCorrectCount = 0;
@@ -290,7 +292,7 @@ public class MemoryTest : Test
         Debug.Log("light button " + direction.ToString());
         yield return new WaitForSeconds(delay);
 
-        PlaySound(buttonLit);
+        PlaySound(buttonLit,1);
         if (direction == Direction.UP) {
             button_up_inner.GetComponent<MeshRenderer>().material = c_litButtonInner_up;
             button_up_outer.GetComponent<MeshRenderer>().material = c_litButtonOuter_up;
@@ -372,9 +374,10 @@ public class MemoryTest : Test
         }
     }
 
-    private void PlaySound(AudioClip clip)
+    private void PlaySound(AudioClip clip, float volume)
     {
         source.pitch = Random.Range(0.8f, 1.2f);
+        source.volume = volume;
         source.PlayOneShot(clip);
     }
 }
