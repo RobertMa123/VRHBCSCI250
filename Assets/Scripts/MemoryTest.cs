@@ -25,6 +25,8 @@ public class MemoryTest : Test
     }
 
     // BUTTONS
+    [Space(10f)]
+
     public GameObject button_up;
     public GameObject button_up_inner;
     public GameObject button_up_outer;
@@ -43,6 +45,8 @@ public class MemoryTest : Test
 
 
     // COLORS
+    [Space(10f)]
+
     public Material c_litButtonInner_up;
     public Material c_litButtonOuter_up;
     private Material c_buttonInner_up;
@@ -83,8 +87,16 @@ public class MemoryTest : Test
 
     protected int correctInputs = 0;
 
+    
+    private AudioSource source;
+    [Space(5f)]
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip pressButton;
+    [SerializeField] private AudioClip buttonLit;
+
     public void Start()
     {
+        source = GetComponent<AudioSource>();
         c_indicator_default = turnIndicator.GetComponent<MeshRenderer>().material;
         hideButtons();
     }
@@ -177,6 +189,7 @@ public class MemoryTest : Test
 
     public void buttonPressed(Direction direction)
     {
+        PlaySound(pressButton);
         if (currentPhase == MemoryTest_Phases.AWAITING_RESPONSE)
         {
             string stringDirection = "";
@@ -277,6 +290,7 @@ public class MemoryTest : Test
         Debug.Log("light button " + direction.ToString());
         yield return new WaitForSeconds(delay);
 
+        PlaySound(buttonLit);
         if (direction == Direction.UP) {
             button_up_inner.GetComponent<MeshRenderer>().material = c_litButtonInner_up;
             button_up_outer.GetComponent<MeshRenderer>().material = c_litButtonOuter_up;
@@ -356,5 +370,11 @@ public class MemoryTest : Test
             Debug.Log("Memory Test class getAccuracyPercentage() cannot be executed since there are no scores currently in the scores list. The value 0 was returned.");
             return 0f;
         }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        source.pitch = Random.Range(0.8f, 1.2f);
+        source.PlayOneShot(clip);
     }
 }

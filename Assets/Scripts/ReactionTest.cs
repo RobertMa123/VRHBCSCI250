@@ -8,6 +8,12 @@ public class ReactionTest : TimedTest
 {
     [SerializeField] protected GameObject leftArrow;
     [SerializeField] protected GameObject rightArrow;
+    private AudioSource source;
+    [Space(5f)]
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip correctClip;
+    [SerializeField] private AudioClip wrongClip;
+    [SerializeField] private AudioClip arrowClip;
     private InputData input;
     public enum Reaction_curDirection {
         NONE = 0,
@@ -31,6 +37,7 @@ public class ReactionTest : TimedTest
     private void Start()
     {
         input = GetComponent<InputData>();
+        source = GetComponent<AudioSource>();
     }
     public ReactionTest() : base() {
         testName = "Reaction Test";
@@ -128,6 +135,8 @@ public class ReactionTest : TimedTest
             curDirection = Reaction_curDirection.RIGHT;
             rightArrow.gameObject.SetActive(true);
         }
+
+        PlaySound(arrowClip, 1);
     }
 
     protected void hideArrow() {
@@ -140,11 +149,15 @@ public class ReactionTest : TimedTest
     }
 
     protected void correctAnswerGiven() {
+        PlaySound(correctClip, 0.6f);
+
         pauseTimer();
         StartCoroutine(delayHideArrowCorrect(1.0f));
     }
 
     protected void wrongAnswerGiven() {
+        PlaySound(wrongClip, 0.6f);
+
         ++incorrectInputs;
         pauseTimer();
         setTimerColor(wrongColor);
@@ -164,5 +177,12 @@ public class ReactionTest : TimedTest
         hideArrow();
         intervalTimer = Random.Range(minWaitTime, maxWaitTime);
         setTimerColor(normalColor);
+    }
+
+    private void PlaySound(AudioClip clip, float volume)
+    {
+        source.pitch = Random.Range(0.8f, 1.2f);
+        source.volume = volume;
+        source.PlayOneShot(clip);
     }
 }

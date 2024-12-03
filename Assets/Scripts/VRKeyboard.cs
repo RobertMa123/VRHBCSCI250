@@ -9,6 +9,8 @@ public class VRKeyboard : MonoBehaviour
 
     public string curString = "";
 
+    private TextMeshPro outputText;
+
     private bool caps = false;
 
     [SerializeField] private List<ToggleKeyLook> keyLookToggles = new List<ToggleKeyLook>();
@@ -16,9 +18,12 @@ public class VRKeyboard : MonoBehaviour
     private float timeElapsed = 0.0f;
     private const float WAIT_TIME = 1.0f;
 
+
     // Start is called before the first frame update
     void Start()
     {
+
+        outputText = transform.GetChild(0).gameObject.GetComponent<TextMeshPro>();
         timeElapsed = WAIT_TIME;
     }
 
@@ -180,6 +185,7 @@ public class VRKeyboard : MonoBehaviour
     public void Concatenate(string stringToConcat)
     {
         curString += stringToConcat;
+        outputText.text = $"You are {curString}";
         updateDisplay();
     }
 
@@ -205,4 +211,6 @@ public class VRKeyboard : MonoBehaviour
     {
         text.text = curString;
     }
+
+   
 }
