@@ -101,7 +101,7 @@ public class TestManager : MonoBehaviour
 
     public void setScoreViewer() {
         if (tutorialUI != null) hideTutorial();
-        if (currentTest != null && scores.Count > 0) {
+        if (currentTest != null && scores.Count > 0 && resultsUI != null) {
             resultsUI = currentTest.getResultsUI();
             resultsUI.text_testType.text = currentTest.getTestName();
             resultsUI.text_avg.text = "Average Score: " + currentTest.getAverageScore().ToString("0.00");
@@ -112,8 +112,11 @@ public class TestManager : MonoBehaviour
     }
 
     public void showScores() {
-        resultsUI.testScoreViewer.SetActive(true);
-        scoreIsShowing = true;
+        if (resultsUI != null)
+        {
+            resultsUI.testScoreViewer.SetActive(true);
+            scoreIsShowing = true;
+        }
     }
 
     public void hideScores() {

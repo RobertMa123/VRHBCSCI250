@@ -56,6 +56,7 @@ public class TimedTest : Test
             timerText.SetActive(false);
         }
 
+        if (!regularTimer) curTimerColor = timerText_VR.GetComponent<TextMeshProUGUI>().color;
         timerText_VR.SetActive(false);
     }
 
@@ -74,7 +75,7 @@ public class TimedTest : Test
     }
 
     protected void setTimerColor(Color color) {
-        timerText.GetComponent<TextMeshProUGUI>().color = color;
+        if (regularTimer) timerText.GetComponent<TextMeshProUGUI>().color = color;
         timerText_VR.GetComponent<TextMeshProUGUI>().color = color;
         curTimerColor = color;
     }
