@@ -18,12 +18,10 @@ public class TestManager : MonoBehaviour
     private bool scoreIsShowing = false;
     private bool tutorialIsShowing = false;
 
-    private InputData input;
 
     // Start is called before the first frame update
     void Start()
     {
-        input = GetComponent<InputData>();
 
         if (resultsUI != null) resultsUI.testScoreViewer.SetActive(false);
         if (tutorialUI != null) tutorialUI.tutorialViewer.SetActive(false);
@@ -41,12 +39,12 @@ public class TestManager : MonoBehaviour
         }
 
         if (scoreIsShowing) {
-            if (Keyboard.current.fKey.wasPressedThisFrame || (input._leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool pressed) || (input._rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool pressedR)) && (pressed || pressedR))) {
+            if (Keyboard.current.fKey.wasPressedThisFrame ) {
                 hideScores();
             }
         }
         if (tutorialIsShowing) {
-            if (Keyboard.current.fKey.wasPressedThisFrame || (input._leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool pressed) || (input._rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool pressedR)) && (pressed || pressedR))) {
+            if (Keyboard.current.fKey.wasPressedThisFrame) {
                 tutorialNextPage();
             }
         }
