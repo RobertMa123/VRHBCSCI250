@@ -14120,7 +14120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2118313923790381926, guid: 053ac136cd1e55d488a23d5eb95a75f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: hideTutorial
+      value: tutorialNextPage
       objectReference: {fileID: 0}
     - target: {fileID: 2118313923790381926, guid: 053ac136cd1e55d488a23d5eb95a75f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -30618,7 +30618,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2118313923790381926, guid: 053ac136cd1e55d488a23d5eb95a75f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: hideTutorial
+      value: tutorialNextPage
       objectReference: {fileID: 0}
     - target: {fileID: 2118313923790381926, guid: 053ac136cd1e55d488a23d5eb95a75f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
