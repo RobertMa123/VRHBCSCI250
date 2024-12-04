@@ -13,7 +13,10 @@ public class TimedTest : Test
 
     private Canvas canvas;
 
+    bool regularTimer = false;
+
     protected GameObject timerText;
+    [SerializeField] protected GameObject timerText_VR;
 
     protected Color curTimerColor;
 
@@ -27,9 +30,11 @@ public class TimedTest : Test
         if (tutorialFinished) {
             if (!timerPaused)
             {
-                timerText.SetActive(true);
+                if (regularTimer) timerText.SetActive(true);
+                timerText_VR.SetActive(true);
                 time += Time.deltaTime;
-                timerText.GetComponent<TextMeshProUGUI>().text = time.ToString();
+                timerText_VR.GetComponent<TextMeshProUGUI>().text = time.ToString();
+                if (regularTimer) timerText.GetComponent<TextMeshProUGUI>().text = time.ToString();
             }
         }
     }
@@ -39,19 +44,25 @@ public class TimedTest : Test
         canvas = GameObject.FindObjectOfType<Canvas>();
 
         // create timer text and add to canvas
-        timerText = new GameObject("Timer Text");
-        timerText.AddComponent<TextMeshProUGUI>().text = time.ToString();
-        timerText.GetComponent<TextMeshProUGUI>().fontSize = 30;
-        timerText.AddComponent<TextMesh>().alignment = TextAlignment.Left;
-        timerText.GetComponent<Transform>().SetParent(canvas.GetComponent<Transform>());
-        timerText.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
-        curTimerColor = timerText.GetComponent<TextMeshProUGUI>().color;
-        timerText.SetActive(false);
+        if (regularTimer)
+        {
+            timerText = new GameObject("Timer Text");
+            timerText.AddComponent<TextMeshProUGUI>().text = time.ToString();
+            timerText.GetComponent<TextMeshProUGUI>().fontSize = 30;
+            timerText.AddComponent<TextMesh>().alignment = TextAlignment.Left;
+            timerText.GetComponent<Transform>().SetParent(canvas.GetComponent<Transform>());
+            timerText.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+            curTimerColor = timerText.GetComponent<TextMeshProUGUI>().color;
+            timerText.SetActive(false);
+        }
+
+        timerText_VR.SetActive(false);
     }
 
     // destroy timer text and return the lowest time as score
     public override float EndTest() {
-        Destroy(timerText);
+        hideTimer();
+        if (regularTimer) Destroy(timerText);
 
         float lowestScore = getLowestScore();
 
@@ -64,6 +75,7 @@ public class TimedTest : Test
 
     protected void setTimerColor(Color color) {
         timerText.GetComponent<TextMeshProUGUI>().color = color;
+        timerText_VR.GetComponent<TextMeshProUGUI>().color = color;
         curTimerColor = color;
     }
 
@@ -84,15 +96,17 @@ public class TimedTest : Test
     }
 
     protected void showTimer() {
-        timerText.gameObject.SetActive(true);
+        if (regularTimer) timerText.gameObject.SetActive(true);
+        timerText_VR.gameObject.SetActive(true);
     }
 
     protected void hideTimer() {
-        timerText.gameObject.SetActive(false);
+        if (regularTimer) timerText.gameObject.SetActive(false);
+        timerText_VR.gameObject.SetActive(false);
     }
 
     protected void toggleShowTimer() {
-        if (timerText.gameObject.activeInHierarchy) {
+        if (timerText.gameObject.activeInHierarchy || timerText_VR.gameObject.activeInHierarchy) {
             hideTimer();
         } else {
             showTimer();

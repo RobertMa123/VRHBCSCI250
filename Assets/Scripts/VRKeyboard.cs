@@ -16,7 +16,7 @@ public class VRKeyboard : MonoBehaviour
     [SerializeField] private List<ToggleKeyLook> keyLookToggles = new List<ToggleKeyLook>();
 
     private float timeElapsed = 0.0f;
-    private const float WAIT_TIME = 1.0f;
+    private const float WAIT_TIME = 0.25f;
 
 
     // Start is called before the first frame update
@@ -25,6 +25,8 @@ public class VRKeyboard : MonoBehaviour
 
         outputText = transform.GetChild(0).gameObject.GetComponent<TextMeshPro>();
         timeElapsed = WAIT_TIME;
+
+        updateDisplay();
     }
 
     // Update is called once per frame
@@ -205,13 +207,16 @@ public class VRKeyboard : MonoBehaviour
 
     public void Enter()
     {
-        // ADD CODE TO SAVE INITIALS TO DATABASE
+        // FUTURE FUNCTIONALITY (ADD CODE TO SAVE INITIALS TO DATABASE OR OTHER ENTER FUNCTIONALITY)
         Clear();
     }
 
     private void updateDisplay()
     {
-        text.text = curString;
+        if (text != null)
+        {
+            text.text = curString;
+        }
         outputText.text = $"You are {curString}";
 
     }

@@ -56,20 +56,22 @@ public class TestManager : MonoBehaviour
         {
 
             scores = currentTest.getScores();
-            InputHandler inputHandler = GetComponent<InputHandler>();
-            float recordedScore = 0;
-            switch(currentTest)
-            {
-                case ReactionTest:
-                    recordedScore = currentTest.getAverageScore();
-                    break;
-                case MemoryTest:
-                    recordedScore = currentTest.getHighestScore();
-                    break;
+            if (scores.Count > 0) {
+                InputHandler inputHandler = GetComponent<InputHandler>();
+                float recordedScore = 0;
+                switch (currentTest)
+                {
+                    case ReactionTest:
+                        recordedScore = currentTest.getAverageScore();
+                        break;
+                    case MemoryTest:
+                        recordedScore = currentTest.getHighestScore();
+                        break;
+                }
+                if (inputHandler != null) inputHandler.AddNameToList(currentTest.name, recordedScore);
+                setScoreViewer();
+                showScores();
             }
-            if (inputHandler != null) inputHandler.AddNameToList(currentTest.name ,recordedScore);
-            setScoreViewer();
-            if (scores.Count > 0) showScores();
             currentTest.EndTest();
             currentTest = null;
 
@@ -98,7 +100,8 @@ public class TestManager : MonoBehaviour
     // ******************** Score Viewer Functions ********************
 
     public void setScoreViewer() {
-        if (currentTest != null) {
+        if (tutorialUI != null) hideTutorial();
+        if (currentTest != null && scores.Count > 0) {
             resultsUI = currentTest.getResultsUI();
             resultsUI.text_testType.text = currentTest.getTestName();
             resultsUI.text_avg.text = "Average Score: " + currentTest.getAverageScore().ToString("0.00");
@@ -122,6 +125,8 @@ public class TestManager : MonoBehaviour
 
     public void setTutorialViewer()
     {
+        if (resultsUI != null) hideScores();
+
         if (currentTest != null)
         {
             tutorialUI = currentTest.getTutorialUI();
