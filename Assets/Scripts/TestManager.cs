@@ -18,6 +18,9 @@ public class TestManager : MonoBehaviour
     private bool scoreIsShowing = false;
     private bool tutorialIsShowing = false;
 
+    [Space(5f)]
+    [SerializeField] private ResultsViewer resultsViewer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +75,7 @@ public class TestManager : MonoBehaviour
                 if (inputHandler != null) inputHandler.AddNameToList(currentTest.name, recordedScore);
                 setScoreViewer();
                 showScores();
+                resultsViewer.AddResult();
             }
             currentTest.EndTest();
             currentTest = null;

@@ -3,18 +3,34 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public class NewBehaviourScript : MonoBehaviour
+using static System.Net.Mime.MediaTypeNames;
+public class ResultsViewer : MonoBehaviour
 {
     List<InputEntry> entries = new List<InputEntry>();
     [SerializeField] string filename;
-    public TextMeshProUGUI[] text;
-
-    private void Update()
+    public GameObject entriesParent;
+    [SerializeField] GameObject textPrefab;
+    private void Start()
     {
         entries = FileHandler.ReadListFromJSON<InputEntry>(filename);
-        for(int i = 0; i< text.Length; i++)
+        AppendResults();
+    }
+
+    public void AppendResults()
+    {
+
+        for (int i = 0; i < entries.Count; i++)
         {
-            text[i].text = entries[entries.Count - i - 1].testName + "| " + entries[entries.Count - i - 1].playerName + ": " + entries[entries.Count - i - 1].points + "\n";
+            GameObject textEntry = Instantiate(textPrefab, entriesParent.transform);
+            textEntry.GetComponent<TextMeshProUGUI>().text = entries[entries.Count - i - 1].testName + "| " + entries[entries.Count - i - 1].playerName + ": " + entries[entries.Count - i - 1].points + "\n";
         }
+    }  
+    
+    public void AddResult()
+    {
+        entries = FileHandler.ReadListFromJSON<InputEntry>(filename);
+
+        GameObject textEntry = Instantiate(textPrefab, entriesParent.transform);
+        textEntry.GetComponent<TextMeshProUGUI>().text = entries[entries.Count - 1].testName + "| " + entries[entries.Count - 1].playerName + ": " + entries[entries.Count - 1].points + "\n";
     }
 }
