@@ -18,6 +18,8 @@ public class VRKeyboard : MonoBehaviour
     private float timeElapsed = 0.0f;
     private const float WAIT_TIME = 0.25f;
 
+    [SerializeField] private ResultsViewer resultsViewer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -219,6 +221,10 @@ public class VRKeyboard : MonoBehaviour
         }
         outputText.text = $"You are {curString}";
 
+        if (resultsViewer != null)
+        {
+            resultsViewer.UpdateCurPlayerEntries();
+        }
     }
 
 
