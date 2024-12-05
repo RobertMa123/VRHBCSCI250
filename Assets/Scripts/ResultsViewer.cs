@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,12 +12,22 @@ public class ResultsViewer : MonoBehaviour
     public GameObject entriesParent;
     [SerializeField] GameObject textPrefab;
 
+    [SerializeField] TextMeshProUGUI sortText;
+    public enum SortType
+    {
+        None = 0,
+        ByRecent = 1,
+        LowToHigh = 2,
+        HighToLow = 3,
+    }
+
+    public SortType currentSortType;
     private List<GameObject> textEntries;
     private void Start()
     {
         textEntries = new List<GameObject>();
 
-        AppendResults();
+        SortResults();
     }
 
     public void AppendResults()
@@ -35,5 +46,46 @@ public class ResultsViewer : MonoBehaviour
             textEntries.Add(textEntry);
         }
     }  
+
+    public void SortResults()
+    {
+        sortText.text = $"Sorting by\n {currentSortType}";
+        switch (currentSortType)
+        {
+            case SortType.ByRecent:
+                SortByRecent();
+                currentSortType = SortType.HighToLow;
+                break;
+            case SortType.HighToLow:
+                SortHighLow();
+                currentSortType = SortType.LowToHigh;
+                break;
+            case SortType.LowToHigh:
+                SortLowHigh();
+                currentSortType = SortType.ByRecent;
+                break;
+        }
+    }
+
+    private void SortByRecent()
+    {
+        AppendResults();
+    }
+    private void SortHighLow()
+    {
+        List<InputEntry> sortedEntries = entries.OrderBy(entry => entry.points).ToList();
+        for (int i = 0; i < sortedEntries.Count;i++)
+        {
+            textEntries[i].GetComponent<TextMeshProUGUI>().text = sortedEntries[sortedEntries.Count - i - 1].testName + "| " + sortedEntries[sortedEntries.Count - i - 1].playerName + ": " + sortedEntries[sortedEntries.Count - i - 1].points + "\n";
+        }
+    }
+    private void SortLowHigh()
+    {
+        List<InputEntry> sortedEntries = entries.OrderBy(entry => entry.points).Reverse().ToList();
+        for (int i = 0; i < sortedEntries.Count; i++)
+        {
+            textEntries[i].GetComponent<TextMeshProUGUI>().text = sortedEntries[sortedEntries.Count - i - 1].testName + "| " + sortedEntries[sortedEntries.Count - i - 1].playerName + ": " + sortedEntries[sortedEntries.Count - i - 1].points + "\n";
+        }
+    }
     
 }
