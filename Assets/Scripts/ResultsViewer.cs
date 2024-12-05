@@ -70,10 +70,7 @@ public class ResultsViewer : MonoBehaviour
             }
         }
 
-        if (getPreviousSortType() != SortType.None && getPreviousSortType() != SortType.ByRecent)
-        {
-            ReSortResultsBySameMethod();
-        }
+       
     }
 
     public void ToggleOnlyShowCurUserScores()
