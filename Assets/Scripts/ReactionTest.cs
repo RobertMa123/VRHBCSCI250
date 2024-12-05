@@ -115,6 +115,8 @@ public class ReactionTest : TimedTest
     }
 
     public override float EndTest() {
+        intervalTimer = 0.0f;
+        curDirection = Reaction_curDirection.NONE;
         leftArrow.gameObject.SetActive(false);
         rightArrow.gameObject.SetActive(false);
 
