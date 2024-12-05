@@ -75,7 +75,7 @@ public class TestManager : MonoBehaviour
                 if (inputHandler != null) inputHandler.AddNameToList(currentTest.name, recordedScore);
                 setScoreViewer();
                 showScores();
-                resultsViewer.AddResult();
+                resultsViewer.AppendResults();
             }
             currentTest.EndTest();
             currentTest = null;

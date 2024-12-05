@@ -10,27 +10,30 @@ public class ResultsViewer : MonoBehaviour
     [SerializeField] string filename;
     public GameObject entriesParent;
     [SerializeField] GameObject textPrefab;
+
+    private List<GameObject> textEntries;
     private void Start()
     {
-        entries = FileHandler.ReadListFromJSON<InputEntry>(filename);
+        textEntries = new List<GameObject>();
+
         AppendResults();
     }
 
     public void AppendResults()
     {
-
+        entries = FileHandler.ReadListFromJSON<InputEntry>(filename);
+        int textEntriesCount = textEntries.Count;
+        for (int i = 0; i< textEntriesCount; i++)
+        {
+            Destroy(textEntries[i]);
+        }
+        textEntries.Clear();
         for (int i = 0; i < entries.Count; i++)
         {
             GameObject textEntry = Instantiate(textPrefab, entriesParent.transform);
             textEntry.GetComponent<TextMeshProUGUI>().text = entries[entries.Count - i - 1].testName + "| " + entries[entries.Count - i - 1].playerName + ": " + entries[entries.Count - i - 1].points + "\n";
+            textEntries.Add(textEntry);
         }
     }  
     
-    public void AddResult()
-    {
-        entries = FileHandler.ReadListFromJSON<InputEntry>(filename);
-
-        GameObject textEntry = Instantiate(textPrefab, entriesParent.transform);
-        textEntry.GetComponent<TextMeshProUGUI>().text = entries[entries.Count - 1].testName + "| " + entries[entries.Count - 1].playerName + ": " + entries[entries.Count - 1].points + "\n";
-    }
 }
